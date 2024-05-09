@@ -408,6 +408,10 @@ function install() {
   main_menu
 }
 
+function walletlist() {
+    0gchaind keys list
+}
+
 # 自动委托功能（暂未实现）
 function delegate_staking() {
 
@@ -456,10 +460,11 @@ function delegate_staking() {
 function main_menu() {
     while true; do
         clear
-        echo "=====================专用脚本 盗者必究==========================="
+        echo "========================自用脚本 盗者必究========================"
         echo "需要测试网节点部署托管 技术指导 定制脚本 请联系Telegram :https://t.me/linzeusasa"
         echo "需要测试网节点部署托管 技术指导 定制脚本 请联系Wechat :llkkxx001"
-        echo "请填写表单申请验证者资格 https://docs.google.com/forms/d/e/1FAIpQLScsa1lpn43F7XAydVlKK_ItLGOkuz2fBmQaZjecDn76kysQsw/viewform"
+        echo "===================0G.AI最新测试网节点一键部署===================="
+        echo "创建好验证者后请填写表单申请资格 https://docs.google.com/forms/d/e/1FAIpQLScsa1lpn43F7XAydVlKK_ItLGOkuz2fBmQaZjecDn76kysQsw/viewform"
         echo "首次安装请直接执行安装节点--钱包管理--配置参数--查询信息--创建验证者"
         echo "验证者哈希请前往官网获取 https://testnet.itrocket.net/og/account"
         echo "请选择要执行的操作:"
@@ -467,7 +472,7 @@ function main_menu() {
         echo "2. 钱包管理"
         echo "3. 配置参数" 
         echo "4. 查询信息"
-        echo "5. 创建验证者"
+        echo "5. 创建验证者(等待高度同步上后再执行)"
         echo "6. 质押代币"
         echo "7. 重启节点"  
         echo "8. 卸载节点"
@@ -491,10 +496,12 @@ function main_menu() {
             echo "请选择要执行的操作:"
             echo "1. 创建钱包"
             echo "2. 导入钱包"
+            echo "3. 钱包列表"
             read -p "请输入选项（1-2）: " WALLET_OPTION
             case $WALLET_OPTION in
             1) add_wallet ;;
             2) import_wallet ;;
+            3) walletlist ;;
             *) echo "无效选项。" ;;
             esac
             ;;
