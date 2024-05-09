@@ -9,64 +9,64 @@ fi
 
 # 配置参数功能
 function set_info() {
-    # 检查 ~/.bash_profile 是否存在，如果不存在则创建
-    if [ ! -f ~/.bash_profile ]; then
-        touch ~/.bash_profile
+    # 检查 ~/.bashrc 是否存在，如果不存在则创建
+    if [ ! -f ~/.bashrc ]; then
+        touch ~/.bashrc
     fi
 
     read -p "请输入创建节点时的密码: " new_pwd
 
-    # 检查 ~/.bash_profile 中是否已存在 0g_pwd，如果存在则替换为新密码，如果不存在则追加
-    if grep -q '^0g_pwd=' ~/.bash_profile; then
-    sed -i "s|^0g_pwd=.*$|0g_pwd=$new_pwd|" ~/.bash_profile
+    # 检查 ~/.bashrc 中是否已存在 0g_pwd，如果存在则替换为新密码，如果不存在则追加
+    if grep -q '^0g_pwd=' ~/.bashrc; then
+    sed -i "s|^0g_pwd=.*$|0g_pwd=$new_pwd|" ~/.bashrc
     else
-    echo "0g_pwd=$new_pwd" >> ~/.bash_profile
+    echo "0g_pwd=$new_pwd" >> ~/.bashrc
     fi
 
     # 输入钱包名
     read -p "请输入钱包名: " wallet_name
 
-    # 检查 ~/.bash_profile 中是否已存在 0g_wallet，如果存在则替换为新钱包名，如果不存在则追加
-    if grep -q '^0g_wallet=' ~/.bash_profile; then
-    sed -i "s|^0g_wallet=.*$|0g_wallet=$wallet_name|" ~/.bash_profile
+    # 检查 ~/.bashrc 中是否已存在 0g_wallet，如果存在则替换为新钱包名，如果不存在则追加
+    if grep -q '^0g_wallet=' ~/.bashrc; then
+    sed -i "s|^0g_wallet=.*$|0g_wallet=$wallet_name|" ~/.bashrc
     else
-    echo "0g_wallet=$wallet_name" >> ~/.bash_profile
+    echo "0g_wallet=$wallet_name" >> ~/.bashrc
     fi
 
     # 输入验证者名字
     read -p "请输入验证者名字: " validator_name
 
-    # 检查 ~/.bash_profile 中是否已存在 0g_validator_name，如果存在则替换为新钱包名，如果不存在则追加
-    if grep -q '^0g_validator_name=' ~/.bash_profile; then
-    sed -i "s|^0g_validator_name=.*$|0g_validator_name=$validator_name|" ~/.bash_profile
+    # 检查 ~/.bashrc 中是否已存在 0g_validator_name，如果存在则替换为新钱包名，如果不存在则追加
+    if grep -q '^0g_validator_name=' ~/.bashrc; then
+    sed -i "s|^0g_validator_name=.*$|0g_validator_name=$validator_name|" ~/.bashrc
     else
-    echo "0g_validator_name=$validator_name" >> ~/.bash_profile
+    echo "0g_validator_name=$validator_name" >> ~/.bashrc
     fi
 
     echo "正在查询钱包地址"
-    # 检查 ~/.bash_profile 中是否已存在 0g_address，如果存在则替换为新地址，如果不存在则追加
-    if grep -q '^0g_address=' ~/.bash_profile; then
+    # 检查 ~/.bashrc 中是否已存在 0g_address，如果存在则替换为新地址，如果不存在则追加
+    if grep -q '^0g_address=' ~/.bashrc; then
         # 执行命令，并将输出赋值给变量shg_address
         shg_address=$(0gchaind keys show $wallet_name -a)
-        sed -i "s|^0g_address=.*$|0g_address=$shg_address|" ~/.bash_profile
+        sed -i "s|^0g_address=.*$|0g_address=$shg_address|" ~/.bashrc
         echo "钱包地址为: $shg_address"
     else
-        echo "0g_address=$shg_address" >> ~/.bash_profile
+        echo "0g_address=$shg_address" >> ~/.bashrc
         echo "钱包地址为: $shg_address"
     fi
     echo "正在查询验证者地址"
-    # 检查 ~/.bash_profile 中是否已存在 0g_validator
-    if grep -q '^0g_validator=' ~/.bash_profile; then
+    # 检查 ~/.bashrc 中是否已存在 0g_validator
+    if grep -q '^0g_validator=' ~/.bashrc; then
         shg_validator=$(0gchaind keys show $wallet_name --bech val -a)
-        sed -i "s|^0g_validator=.*$|0g_validator=$shg_validator|" ~/.bash_profile
+        sed -i "s|^0g_validator=.*$|0g_validator=$shg_validator|" ~/.bashrc
         echo "验证者地址为: $shg_validator"
     else
-        0g_validator=$(0gchaind keys show $wallet_name --bech val -a)
-        echo "0g_validator=$shg_validator" >> ~/.bash_profile
+        shg_validator=$(0gchaind keys show $wallet_name --bech val -a)
+        echo "0g_validator=$shg_validator" >> ~/.bashrc
         echo "验证者地址为: $shg_validator"
     fi
 
-  echo "参数已设置成功，并写入到 ~/.bash_profile 文件中"
+  echo "参数已设置成功，并写入到 ~/.bashrc 文件中"
 
   read -p "按回车键返回主菜单"
 
@@ -143,8 +143,8 @@ function install_node() {
     if ! check_go_installation; then
         sudo rm -rf /usr/local/go
         curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
-        echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
-        source $HOME/.bash_profile
+        echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bashrc
+        source $HOME/.bashrc
         go version
     fi
 
@@ -227,7 +227,7 @@ function import_wallet() {
 
 # 查询余额
 function check_balances() {
-    wallet_address=$(grep '^0g_address=' ~/.bash_profile | cut -d '=' -f 2)
+    wallet_address=$(grep '^0g_address=' ~/.bashrc | cut -d '=' -f 2)
     0gchaind query bank balances "$wallet_address"
 }
 
@@ -241,8 +241,8 @@ function check_sync_status() {
 function add_validator() {
 
 echo "正在创建验证者，请稍等······"
-wallet_name=$(grep '^0g_wallet=' ~/.bash_profile | cut -d '=' -f 2)
-validator_name=$(grep '^0g_validator_name=' ~/.bash_profile | cut -d '=' -f 2)
+wallet_name=$(grep '^0g_wallet=' ~/.bashrc | cut -d '=' -f 2)
+validator_name=$(grep '^0g_validator_name=' ~/.bashrc | cut -d '=' -f 2)
 
 0gchaind tx staking create-validator \
   --amount=1000000ua0gi \
@@ -270,9 +270,9 @@ function install_storage_node() {
 # 安装Go
     sudo rm -rf /usr/local/go
     curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
-    echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
+    echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bashrc
     export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-    source $HOME/.bash_profile
+    source $HOME/.bashrc
 
     
 # 克隆仓库
@@ -371,7 +371,7 @@ echo '====================== 启动成功，请通过screen -r zgs_node_session 
 # 转换ETH地址
 function evm_address() {
 
-    wallet_name=$(grep '^0g_wallet=' ~/.bash_profile | cut -d '=' -f 2)
+    wallet_name=$(grep '^0g_wallet=' ~/.bashrc | cut -d '=' -f 2)
     echo "0x$(0gchaind debug addr $(0gchaind keys show $wallet_name -a) | grep hex | awk '{print $3}')"
 
 }
@@ -413,11 +413,11 @@ function delegate_staking() {
 
   # 获取密码和钱包名
   local art_pwd art_wallet
-  art_pwd=$(grep -oP 'art_pwd=\K.*' ~/.bash_profile)
-  art_wallet=$(grep -oP 'art_wallet=\K.*' ~/.bash_profile)
-  art_address=$(grep -oP 'art_address=\K.*' ~/.bash_profile)
-  art_validator=$(grep -oP 'art_validator=\K.*' ~/.bash_profile)
-  art_amount=$(grep -oP 'art_amount=\K.*' ~/.bash_profile)
+  art_pwd=$(grep -oP 'art_pwd=\K.*' ~/.bashrc)
+  art_wallet=$(grep -oP 'art_wallet=\K.*' ~/.bashrc)
+  art_address=$(grep -oP 'art_address=\K.*' ~/.bashrc)
+  art_validator=$(grep -oP 'art_validator=\K.*' ~/.bashrc)
+  art_amount=$(grep -oP 'art_amount=\K.*' ~/.bashrc)
   
   # 获取 art.sh 脚本
   wget -O art.sh https://raw.githubusercontent.com/run-node/Artela-node/main/art.sh && chmod +x art.sh
