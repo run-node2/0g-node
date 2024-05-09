@@ -13,7 +13,7 @@ function set_info() {
     if [ ! -f ~/.bashrc ]; then
         touch ~/.bashrc
     fi
-
+    echo "接下来请确认是否成功查询出钱包地址和验证者地址，如果没有正确输出两个地址 请重新执行一遍配置参数功能获取地址"
     read -p "请输入创建节点时的密码: " new_pwd
 
     # 检查 ~/.bashrc 中是否已存在 0g_pwd，如果存在则替换为新密码，如果不存在则追加
@@ -42,7 +42,6 @@ function set_info() {
     else
     echo "0g_validator_name=$validator_name" >> ~/.bashrc
     fi
-    echo "接下来请确认是否成功查询出钱包地址和验证者地址，如果没有输出两个地址 请重新执行一遍配置参数功能"
     echo "正在查询钱包地址"
     # 检查 ~/.bashrc 中是否已存在 0g_address，如果存在则替换为新地址，如果不存在则追加
     if grep -q '^0g_address=' ~/.bashrc; then
