@@ -466,7 +466,7 @@ function main_menu() {
         echo "===================0G.AI最新测试网节点一键部署===================="
         echo "创建好验证者后请填写表单申请资格 https://docs.google.com/forms/d/e/1FAIpQLScsa1lpn43F7XAydVlKK_ItLGOkuz2fBmQaZjecDn76kysQsw/viewform"
         echo "首次安装请直接执行安装节点--钱包管理--配置参数--查询信息--创建验证者"
-        echo "验证者哈希请前往官网获取 https://testnet.itrocket.net/og/account"
+        echo "验证者哈希请前往官网获取 https://testnet.explorer.liveraven.net/zero-gravity/account"
         echo "请选择要执行的操作:"
         echo "1. 安装节点"
         echo "2. 钱包管理"
