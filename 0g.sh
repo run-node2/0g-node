@@ -33,15 +33,6 @@ function set_info() {
     echo "0g_wallet=$wallet_name" >> ~/.bashrc
     fi
 
-    # 输入验证者名字
-    read -p "请输入验证者名字: " validator_name
-
-    # 检查 ~/.bashrc 中是否已存在 0g_validator_name，如果存在则替换为新钱包名，如果不存在则追加
-    if grep -q '^0g_validator_name=' ~/.bashrc; then
-    sed -i "s|^0g_validator_name=.*$|0g_validator_name=$validator_name|" ~/.bashrc
-    else
-    echo "0g_validator_name=$validator_name" >> ~/.bashrc
-    fi
     echo "正在查询钱包地址"
     # 检查 ~/.bashrc 中是否已存在 0g_address，如果存在则替换为新地址，如果不存在则追加
     if grep -q '^0g_address=' ~/.bashrc; then
@@ -53,6 +44,17 @@ function set_info() {
         echo "0g_address=$shg_address" >> ~/.bashrc
         echo "钱包地址为: $shg_address"
     fi
+    
+    # 输入验证者名字
+    read -p "请输入验证者名字: " validator_name
+
+    # 检查 ~/.bashrc 中是否已存在 0g_validator_name，如果存在则替换为新钱包名，如果不存在则追加
+    if grep -q '^0g_validator_name=' ~/.bashrc; then
+    sed -i "s|^0g_validator_name=.*$|0g_validator_name=$validator_name|" ~/.bashrc
+    else
+    echo "0g_validator_name=$validator_name" >> ~/.bashrc
+    fi
+    
     echo "正在查询验证者地址"
     # 检查 ~/.bashrc 中是否已存在 0g_validator
     if grep -q '^0g_validator=' ~/.bashrc; then
