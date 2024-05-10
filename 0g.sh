@@ -44,7 +44,7 @@ function set_info() {
         echo "0g_address=$shg_address" >> ~/.bashrc
         echo "钱包地址为: $shg_address"
     fi
-    
+
     # 输入验证者名字
     read -p "请输入验证者名字: " validator_name
 
@@ -54,7 +54,7 @@ function set_info() {
     else
     echo "0g_validator_name=$validator_name" >> ~/.bashrc
     fi
-    
+
     echo "正在查询验证者地址"
     # 检查 ~/.bashrc 中是否已存在 0g_validator
     if grep -q '^0g_validator=' ~/.bashrc; then
@@ -118,10 +118,10 @@ function install_pm2() {
 function check_go_installation() {
     if command -v go > /dev/null 2>&1; then
         echo "Go 环境已安装"
-        return 0 
+        return 0
     else
         echo "Go 环境未安装，正在安装..."
-        return 1 
+        return 1
     fi
 }
 
@@ -144,8 +144,8 @@ function install_node() {
     if ! check_go_installation; then
         sudo rm -rf /usr/local/go
         curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
-        echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bashrc
-        source $HOME/.bashrc
+        echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
+        source $HOME/.bash_profile
         go version
     fi
 
@@ -169,7 +169,7 @@ function install_node() {
     wget -O ~/.0gchain/config/genesis.json https://github.com/0glabs/0g-chain/releases/download/v0.1.0/genesis.json
     0gchaind validate-genesis
     wget https://smeby.fun/0gchaind-addrbook.json -O $HOME/.0gchain/config/addrbook.json
-    
+
     # 配置节点
     SEEDS="31e5b7a44cfffc25ff9f4c1a7ae51fa1782a5970@121.37.192.245:26656,c4d619f6088cb0b24b4ab43a0510bf9251ab5d7f@54.241.167.190:26656,44d11d4ba92a01b520923f51632d2450984d5886@54.176.175.48:26656,f2693dd86766b5bf8fd6ab87e2e970d564d20aff@54.193.250.204:26656,f878d40c538c8c23653a5b70f615f8dccec6fb9f@54.215.187.94:26656"
     PEERS="f29bfef196ca62751a9c0d0b4bcd823254a43b88@138.201.221.84:26656,75a398f9e3a7d24c6b3ba4ab71bf30cd59faee5c@95.216.42.217:26656,5a202fb905f20f96d8ff0726f0c0756d17cf23d8@43.248.98.100:26656,9d88e34a436ec1b50155175bc6eba89e7a1f0e9a@213.199.61.18:26656,2b8ee12f4f94ebc337af94dbec07de6f029a24e6@94.16.31.161:26656,52e30a030ff6ded32e7a499de6246c574f57cc27@152.53.32.51:26656,a8d7c5a051c4649ba7e267c94e48a7c64a00f0eb@65.108.127.146:26656,8f463ad676c2ea97f88a1274cdcb9f155522fd49@209.126.8.121:26657,bcfbafecc407b1cfd7737a172adda535580c62ed@62.169.19.5:26656,a8d7c5a051c4649ba7e267c94e48a7c64a00f0eb@65.108.127.146:26656,8f463ad676c2ea97f88a1274cdcb9f155522fd49@209.126.8.121:26657,75a398f9e3a7d24c6b3ba4ab71bf30cd59faee5c@95.216.42.217:26656,5a202fb905f20f96d8ff0726f0c0756d17cf23d8@43.248.98.100:26656,9d88e34a436ec1b50155175bc6eba89e7a1f0e9a@213.199.61.18:26656,2b8ee12f4f94ebc337af94dbec07de6f029a24e6@94.16.31.161:26656,52e30a030ff6ded32e7a499de6246c574f57cc27@152.53.32.51:26656,8f463ad676c2ea97f88a1274cdcb9f155522fd49@209.126.8.121:26657,bcfbafecc407b1cfd7737a172adda535580c62ed@62.169.19.5:26656,30f35c4bd9d78a05257413cf8151e9a7d33a3d43@84.247.154.58:26656"
@@ -179,14 +179,14 @@ function install_node() {
 
     # 使用 PM2 启动节点进程
     pm2 start 0gchaind -- start && pm2 save && pm2 startup
-    
+
     pm2 stop 0gchaind
     curl -L https://smeby.fun/0gchaind_snapshots.tar.lz4 | tar -I lz4 -xf - -C $HOME/.0gchain/data
 
     mv $HOME/.0gchain/priv_validator_state.json.backup $HOME/.0gchain/data/priv_validator_state.json
 
     pm2 restart 0gchaind
-    
+
 }
 
 # 查看0gai 服务状态
@@ -203,7 +203,7 @@ function view_logs() {
 function restart_node() {
     pm2 restart 0gchaind
 echo '====================== 已重启验证节点，请通过查询验证节点日志功能或者pm2 logs 0gchaind查询 ==========================='
-}  
+}
 
 # 0gai 重启存储节点
 function restart_storage(){
@@ -271,11 +271,11 @@ function install_storage_node() {
 # 安装Go
     sudo rm -rf /usr/local/go
     curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
-    echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bashrc
+    echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
     export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-    source $HOME/.bashrc
+    source $HOME/.bash_profile
 
-    
+
 # 克隆仓库
 git clone https://github.com/0glabs/0g-storage-node.git
 
@@ -423,7 +423,7 @@ function delegate_staking() {
   art_address=$(grep -oP 'art_address=\K.*' ~/.bashrc)
   art_validator=$(grep -oP 'art_validator=\K.*' ~/.bashrc)
   art_amount=$(grep -oP 'art_amount=\K.*' ~/.bashrc)
-  
+
   # 获取 art.sh 脚本
   wget -O art.sh https://raw.githubusercontent.com/run-node/Artela-node/main/art.sh && chmod +x art.sh
 
@@ -440,14 +440,14 @@ function delegate_staking() {
     sed -i "s|\$address|$art_address|g" art.sh
 
     # 获取验证者地址并替换 art.sh 中的占位符
-    sed -i "s|\$validator|$art_validator|g" art.sh    
+    sed -i "s|\$validator|$art_validator|g" art.sh
 
   # 检查并关闭已存在的 screen 会话
   if screen -list | grep -q delegate; then
     screen -S delegate -X quit
     echo "正在关闭之前设置的自动质押······"
   fi
-  
+
   # 创建一个screen会话并运行命令
   screen -dmS delegate bash -c './art.sh'
   echo "===========自动质押已开启；每隔1~5小时自动质押(保证交互时间不一致)==========="
@@ -471,11 +471,11 @@ function main_menu() {
         echo "请选择要执行的操作:"
         echo "1. 安装节点"
         echo "2. 钱包管理"
-        echo "3. 配置参数" 
+        echo "3. 配置参数"
         echo "4. 查询信息"
         echo "5. 创建验证者(等待高度同步上后再执行)"
         echo "6. 质押代币"
-        echo "7. 重启节点"  
+        echo "7. 重启节点"
         echo "8. 卸载节点"
         read -p "请输入选项（1-8）: " OPTION
 
@@ -508,7 +508,7 @@ function main_menu() {
             ;;
         3)
             set_info ;;
-        
+
         4)
             echo "=========================查询信息菜单============================"
             echo "请选择要执行的操作:"
@@ -533,7 +533,7 @@ function main_menu() {
             add_validator ;;
         6)
             delegate ;;
-        7) 
+        7)
             echo "===========================重启节点=============================="
             echo "请选择要执行的操作:"
             echo "1. 重启验证节点"
@@ -543,9 +543,9 @@ function main_menu() {
             1) restart_node ;;
             2) restart_storage ;;
             *) echo "无效选项。" ;;
-            esac 
+            esac
             ;;
-        8) 
+        8)
             echo "=========================卸载节点菜单============================"
             echo "请选择要执行的操作:"
             echo "1. 卸载验证节点"
@@ -555,9 +555,9 @@ function main_menu() {
             1) uninstall_node ;;
             2) uninstall_old ;;
             *) echo "无效选项。" ;;
-            esac 
+            esac
             ;;
-            
+
         *) echo "无效选项。" ;;
         esac
         echo "按任意键返回主菜单..."
