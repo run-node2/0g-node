@@ -239,7 +239,7 @@ function check_balances() {
 
 # 查看节点同步状态
 function check_sync_status() {
-    0gchaind status 2>&1 | jq .sync_info
+    0gchaind status --node $OG_RPC_PORT | jq  .sync_info
 }
 
 
