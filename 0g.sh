@@ -476,8 +476,7 @@ wget https://smeby.fun/0gchaind-addrbook.json -O $HOME/.0gchain/config/addrbook.
 }
 
 function backup(){
-wget https://smeby.fun/0gchaind-addrbook.json -O $HOME/.0gchain/config/addrbook.json && pm2 restart 0gchaind
-cp /root/.0gchaind/config/priv_validator_key.json $HOME
+mkdir -p $HOME/0g_key && mv /root/.0gchain/config/priv_validator_key.json $HOME/0g_key
 }
 
 # 主菜单
@@ -502,7 +501,7 @@ function main_menu() {
         echo "8. 卸载节点"
         echo "9. 下载快照"
         echo "10. 更新addrbook"
-        echo "11. 备份private_key到root目录"
+        echo "11. 备份private_key到root/0g_key目录"
         read -p "请输入选项（1-11）: " OPTION
 
         case $OPTION in
