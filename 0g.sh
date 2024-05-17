@@ -461,6 +461,19 @@ function delegate_staking() {
   main_menu
 }
 
+function download(){
+
+curl -L https://smeby.fun/0gchaind_snapshots.tar.lz4 | tar -I lz4 -xf - -C $HOME/.0gchain/data
+
+mv $HOME/.0gchain/priv_validator_state.json.backup $HOME/.0gchain/data/priv_validator_state.json
+
+pm2 restart 0gchaind
+}
+
+function update(){
+wget https://smeby.fun/0gchaind-addrbook.json -O $HOME/.0gchain/config/addrbook.json && pm2 restart 0gchaind
+
+}
 
 # 主菜单
 function main_menu() {
@@ -482,7 +495,9 @@ function main_menu() {
         echo "6. 质押代币"
         echo "7. 重启节点"
         echo "8. 卸载节点"
-        read -p "请输入选项（1-8）: " OPTION
+        echo "9. 下载快照"
+        echo "10. 更新addrbook"
+        read -p "请输入选项（1-10）: " OPTION
 
         case $OPTION in
         1)
@@ -562,6 +577,8 @@ function main_menu() {
             *) echo "无效选项。" ;;
             esac
             ;;
+         9) download ;;
+         10) update ;;
 
         *) echo "无效选项。" ;;
         esac
