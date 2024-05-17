@@ -234,7 +234,7 @@ function import_wallet() {
 # 查询余额
 function check_balances() {
     wallet_address=$(grep '^0g_address=' ~/.bashrc | cut -d '=' -f 2)
-    0gchaind query bank balances "$wallet_address"
+    0gchaind query bank balances "$wallet_address" --node $OG_RPC_PORT
 }
 
 # 查看节点同步状态
