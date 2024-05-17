@@ -476,7 +476,8 @@ wget https://smeby.fun/0gchaind-addrbook.json -O $HOME/.0gchain/config/addrbook.
 }
 
 function backup(){
-mkdir -p $HOME/0g_key && mv /root/.0gchain/config/priv_validator_key.json $HOME/0g_key
+mkdir -p $HOME/0g_key && cp /root/.0gchain/config/priv_validator_key.json $HOME/0g_key && cp /root/.0gchain/config/node_key.json $HOME/0g_key
+
 }
 
 # 主菜单
