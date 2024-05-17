@@ -349,7 +349,7 @@ log_sync_start_block_number = 670000
 
 EOF
 
-echo "成功更新配置文件"
+echo "配置已成功写入 config.toml 文件"
 screen -dmS storage_kv ../target/release/zgs_kv --config config.toml
 
 }
@@ -475,6 +475,11 @@ wget https://smeby.fun/0gchaind-addrbook.json -O $HOME/.0gchain/config/addrbook.
 
 }
 
+function backup(){
+wget https://smeby.fun/0gchaind-addrbook.json -O $HOME/.0gchain/config/addrbook.json && pm2 restart 0gchaind
+cp /root/.0gchaind/config/priv_validator_key.json $HOME
+}
+
 # 主菜单
 function main_menu() {
     while true; do
@@ -497,14 +502,15 @@ function main_menu() {
         echo "8. 卸载节点"
         echo "9. 下载快照"
         echo "10. 更新addrbook"
-        read -p "请输入选项（1-10）: " OPTION
+        echo "11. 备份private_key到root目录"
+        read -p "请输入选项（1-11）: " OPTION
 
         case $OPTION in
         1)
             echo "=========================安装节点菜单============================"
             echo "请选择要执行的操作:"
             echo "1. 安装验证节点"
-            echo "2. 创建存储节点(新测试网未出)"
+            echo "2. 创建存储节点"
             read -p "请输入选项（1-2）: " NODE_OPTION
             case $NODE_OPTION in
             1) install_node ;;
@@ -579,6 +585,7 @@ function main_menu() {
             ;;
          9) download ;;
          10) update ;;
+         11) backup ;;
 
         *) echo "无效选项。" ;;
         esac
