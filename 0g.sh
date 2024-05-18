@@ -280,9 +280,9 @@ function install_storage_node() {
     export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
     source $HOME/.bash_profile
 
-
+    
 # 克隆仓库
-git clone https://github.com/0glabs/0g-storage-node.git
+git clone -b v0.2.0 https://github.com/0glabs/0g-storage-node.git
 
 #进入对应目录构建
 cd 0g-storage-node
@@ -295,12 +295,10 @@ cargo build --release
 cd run
 
 
-read -p "请输入EVM钱包私钥(不要有0x): " minerkey
+read -p "请输入你想导入的EVM钱包私钥，不要有0x: " minerkey
 
-sed -i "s/miner_id = \"\"/miner_id = \"$(openssl rand -hex 32)\"/" config.toml
 sed -i "s/miner_key = \"\"/miner_key = \"$minerkey\"/" config.toml
-
-
+sed -i 's|blockchain_rpc_endpoint = "https://rpc-testnet.0g.ai"|blockchain_rpc_endpoint = "https://0g-evm-rpc.stakeme.pro"|g' config.toml
 
 
 screen -dmS zgs_node_session ../target/release/zgs_node --config config.toml
