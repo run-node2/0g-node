@@ -484,9 +484,8 @@ mkdir -p $HOME/0g_key && cp /root/.0gchain/config/priv_validator_key.json $HOME/
 function main_menu() {
     while true; do
         clear
-        echo "========================自用脚本 盗者必究========================="
+        echo "============================自用脚本============================="
         echo "需要测试网节点部署托管 技术指导 定制脚本 请联系Telegram :https://t.me/linzeusasa"
-        echo "需要测试网节点部署托管 技术指导 定制脚本 请联系Wechat :llkkxx001"
         echo "===================0G.AI最新测试网节点一键部署===================="
         echo "创建好验证者后请填写表单申请资格 https://docs.google.com/forms/d/e/1FAIpQLScsa1lpn43F7XAydVlKK_ItLGOkuz2fBmQaZjecDn76kysQsw/viewform"
         echo "首次安装请直接执行安装节点--钱包管理--配置参数--查询信息--创建验证者"
