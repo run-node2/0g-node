@@ -309,14 +309,25 @@ echo '===进入对应路径:/0g-storage-node/run/log，使用tail -f logs文件�
 }
 
 
-function install_storage_kv() {
+function install_storage_node() {
 
+    sudo apt-get update
+    sudo apt-get install clang cmake build-essential git screen cargo -y
+
+
+# 安装Go
+    sudo rm -rf /usr/local/go
+    curl -L https://go.dev/dl/go1.22.0.linux-amd64.tar.gz | sudo tar -xzf - -C /usr/local
+    echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> $HOME/.bash_profile
+    export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+    source $HOME/.bash_profile
+
+    
 # 克隆仓库
-git clone https://github.com/0glabs/0g-storage-kv.git
-
+git clone -b v0.2.0 https://github.com/0glabs/0g-storage-node.git
 
 #进入对应目录构建
-cd 0g-storage-kv
+cd 0g-storage-node
 git submodule update --init
 
 # 构建代码
@@ -325,30 +336,18 @@ cargo build --release
 #后台运行
 cd run
 
-echo "请输入RPC节点信息: "
-read blockchain_rpc_endpoint
+
+read -p "请输入你想导入的EVM钱包私钥，不要有0x: " minerkey
+
+sed -i "s/miner_key = \"\"/miner_key = \"$minerkey\"/" config.toml
+sed -i 's|blockchain_rpc_endpoint = "https://rpc-testnet.0g.ai"|blockchain_rpc_endpoint = "https://evm-rpc-0gchain.dadunode.com"|g' config.toml
+sed -i 's/log_sync_start_block_number = 80981/log_sync_start_block_number = 223989/' config.toml
 
 
-cat > config.toml <<EOF
-stream_ids = ["000000000000000000000000000000000000000000000000000000000000f2bd", "000000000000000000000000000000000000000000000000000000000000f009", "00000000000000000000000000"]
+screen -dmS zgs_node_session ../target/release/zgs_node --config config.toml
 
-db_dir = "db"
-kv_db_dir = "kv.DB"
-
-rpc_enabled = true
-rpc_listen_address = "127.0.0.1:6789"
-zgs_node_urls = "http://127.0.0.1:5678"
-
-log_config_file = "log_config"
-
-blockchain_rpc_endpoint = "$blockchain_rpc_endpoint"
-log_contract_address = "0x22C1CaF8cbb671F220789184fda68BfD7eaA2eE1"
-log_sync_start_block_number = 670000
-
-EOF
-
-echo "配置已成功写入 config.toml 文件"
-screen -dmS storage_kv ../target/release/zgs_kv --config config.toml
+echo '====================== 安装完成 ==========================='
+echo '===进入对应路径:/0g-storage-node/run/log，使用tail -f logs文件名，查看logs 即可========================'
 
 }
 
